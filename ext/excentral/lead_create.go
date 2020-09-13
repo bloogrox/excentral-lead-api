@@ -54,6 +54,7 @@ func (a *API) CreateLead(r RequestCreateLead) (*ResponseCreateLead, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "API.CreateLead")
 	}
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
