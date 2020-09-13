@@ -1,0 +1,13 @@
+Your affiliate ID: 358
+Your partner ID:
+https://dev-partners.excentral-int.com/1.0/api/affiliates
+
+
+https://partners.excentral-int.com/
+a@cpanova.pro
+
+
+
+API
+
+https://api-partners.excentral-int.com/v1/[METHOD]
