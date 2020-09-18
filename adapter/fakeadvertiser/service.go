@@ -1,9 +1,6 @@
 package fakeadvertiser
 
 import (
-	"github.com/pkg/errors"
-	"gitlab.com/cpanova/excentral/ext/excentral"
-
 	adv "gitlab.com/cpanova/excentral/domain/advertiser"
 )
 
@@ -15,9 +12,9 @@ func New() adv.Service {
 }
 
 func (fake) CreateLead(adv.Request) (*adv.Lead, error) {
-	return nil, errors.Wrap(excentral.ErrUnknown, "fakeadapter")
-	// return &adv.Lead{
-	// 	ID:     1,
-	// 	Status: "Completed",
-	// }, nil
+	// return nil, errors.Wrap(excentral.ErrUnknown, "fakeadapter")
+	return &adv.Lead{
+		ID:     1,
+		Status: "Completed",
+	}, nil
 }
