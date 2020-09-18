@@ -11,7 +11,7 @@ import (
 	"gitlab.com/cpanova/excentral/domain/lead"
 )
 
-const pid = 1
+var defPID = 1
 
 // Handler ...
 type Handler interface {
@@ -90,6 +90,12 @@ func (h *handler) Post(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte(err.Error()))
 			return
 		}
+	}
+
+	pid := data.PID
+
+	if data.PID == 0 {
+		pid = defPID
 	}
 
 	l := lead.Lead{
