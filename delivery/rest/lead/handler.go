@@ -44,6 +44,7 @@ type Request struct {
 	Country   string `json:"country"`
 	Source    string `json:"source"`
 	Sub1      string `json:"sub1"`
+	PID       int    `json:"pid"`
 }
 
 func (h *handler) Post(w http.ResponseWriter, r *http.Request) {
