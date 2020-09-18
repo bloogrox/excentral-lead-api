@@ -20,6 +20,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
+	adminstatsrepo "gitlab.com/cpanova/excentral/adapter/adminstats"
 	"gitlab.com/cpanova/excentral/adapter/advertiser"
 	conversionrepo "gitlab.com/cpanova/excentral/adapter/conversion"
 	"gitlab.com/cpanova/excentral/adapter/fakeadvertiser"
@@ -33,6 +34,7 @@ import (
 	conversionPostbackWrk "gitlab.com/cpanova/excentral/worker/conversion/postback"
 	conversionProcessWrk "gitlab.com/cpanova/excentral/worker/conversion/process"
 
+	statsHandler "gitlab.com/cpanova/excentral/delivery/rest/admin/stats"
 	leadHandler "gitlab.com/cpanova/excentral/delivery/rest/lead"
 )
 
@@ -50,6 +52,7 @@ func main() {
 	leadRepo := leadrepo.New(db)
 	conversionRepo := conversionrepo.New(db)
 	postbackRepo := postbackrepo.New(db)
+	adminstatsRepo := adminstatsrepo.New(db)
 	_ = fakeadvertiser.New()
 
 	exAffIDStr := os.Getenv("EXCENTRAL_AFF_ID")
@@ -146,6 +149,12 @@ func main() {
 			advService,
 			leadRepo,
 		).Post)
+
+	r.Get(
+		"/admin/stats",
+		statsHandler.NewHandler(
+			adminstatsRepo,
+		).Stats)
 
 	errs := make(chan error, 2)
 	go func() {
