@@ -8,6 +8,6 @@ type DailyReport struct {
 
 // PIDReport ...
 type PIDReport struct {
-	PID   int
+	P_ID  int
 	Count int
 }

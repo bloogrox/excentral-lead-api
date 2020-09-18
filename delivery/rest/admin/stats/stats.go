@@ -46,7 +46,7 @@ const tpl = `
                 <tbody>
                     {{range $row := .ByPID}}
                     <tr>
-                        <td>{{$row.PID}} </td>
+                        <td>{{$row.P_ID}} </td>
                         <td>{{$row.Count}} </td>
                     </tr>
                     {{end}}
