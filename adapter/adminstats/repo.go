@@ -32,7 +32,7 @@ func (r *repo) ByDay() ([]adminstats.DailyReport, error) {
 func (r *repo) ByPID() ([]adminstats.PIDReport, error) {
 	var rows []adminstats.PIDReport
 
-	r.db.Model(&lead.Lead{}).Select("p_id, count(*) as count").Group("p_id").Scan(&rows)
+	r.db.Model(&lead.Lead{}).Select("p_id, count(*) as count").Group("p_id").Order("p_id").Scan(&rows)
 	// if result.Error != nil {
 	// 	return nil, errors.Wrap(result.Error, "Adapter.AdminStats.ByPID")
 	// }
