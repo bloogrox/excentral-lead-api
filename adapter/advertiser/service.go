@@ -29,6 +29,7 @@ func (s *Service) CreateLead(r advertiser.Request) (*advertiser.Lead, error) {
 		Language:  r.Language,
 		Country:   r.Country,
 		Marker:    r.Source,
+		Campaign:  r.Campaign,
 	}
 
 	resp, err := s.api.CreateLead(req)

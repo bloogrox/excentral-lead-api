@@ -25,6 +25,7 @@ import (
 	conversionrepo "gitlab.com/cpanova/excentral/adapter/conversion"
 	"gitlab.com/cpanova/excentral/adapter/fakeadvertiser"
 	leadrepo "gitlab.com/cpanova/excentral/adapter/lead"
+	partnerrepo "gitlab.com/cpanova/excentral/adapter/partner"
 	postbackrepo "gitlab.com/cpanova/excentral/adapter/postback"
 
 	advapi "gitlab.com/cpanova/excentral/ext/excentral"
@@ -50,6 +51,7 @@ func main() {
 	}
 
 	leadRepo := leadrepo.New(db)
+	partnerRepo := partnerrepo.New(db)
 	conversionRepo := conversionrepo.New(db)
 	postbackRepo := postbackrepo.New(db)
 	adminstatsRepo := adminstatsrepo.New(db)
@@ -148,6 +150,7 @@ func main() {
 		leadHandler.NewHandler(
 			advService,
 			leadRepo,
+			partnerRepo,
 		).Post)
 
 	r.Get(

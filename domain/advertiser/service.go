@@ -9,6 +9,7 @@ type Request struct {
 	Language  string
 	Country   string
 	Source    string
+	Campaign  string
 }
 
 // Lead ...

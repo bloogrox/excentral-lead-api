@@ -20,6 +20,7 @@ type RequestCreateLead struct {
 	Language  string
 	Country   string
 	Marker    string
+	Campaign  string
 }
 
 // ResponseCreateLead ...
@@ -46,6 +47,7 @@ func (a *API) CreateLead(r RequestCreateLead) (*ResponseCreateLead, error) {
 	data.Set("language", r.Language)
 	data.Set("country", r.Country)
 	data.Set("marker", r.Marker)
+	data.Set("campaign", r.Campaign)
 
 	checksum := a.generateChecksum(data)
 	data.Set("checksum", checksum)

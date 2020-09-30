@@ -2,6 +2,7 @@ package lead
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/pkg/errors"
@@ -9,6 +10,7 @@ import (
 
 	"gitlab.com/cpanova/excentral/domain/advertiser"
 	"gitlab.com/cpanova/excentral/domain/lead"
+	"gitlab.com/cpanova/excentral/domain/partner"
 )
 
 var defPID = 1
@@ -19,18 +21,21 @@ type Handler interface {
 }
 
 type handler struct {
-	adv      advertiser.Service
-	leadRepo lead.Repo
+	adv         advertiser.Service
+	leadRepo    lead.Repo
+	partnerRepo partner.Repo
 }
 
 // NewHandler ...
 func NewHandler(
 	adv advertiser.Service,
 	leadRepo lead.Repo,
+	partnerRepo partner.Repo,
 ) Handler {
 	return &handler{
-		adv:      adv,
-		leadRepo: leadRepo,
+		adv:         adv,
+		leadRepo:    leadRepo,
+		partnerRepo: partnerRepo,
 	}
 }
 
@@ -55,6 +60,18 @@ func (h *handler) Post(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	pid := data.PID
+
+	if data.PID == 0 {
+		pid = defPID
+	}
+
+	p, err := h.partnerRepo.Get(pid)
+	if err != nil {
+		http.Error(w, "Invalid PID", http.StatusBadRequest)
+		return
+	}
+
 	advReq := advertiser.Request{
 		Email:     data.Email,
 		FirstName: data.FirstName,
@@ -63,6 +80,7 @@ func (h *handler) Post(w http.ResponseWriter, r *http.Request) {
 		Language:  data.Language,
 		Country:   data.Country,
 		Source:    data.Source,
+		Campaign:  fmt.Sprintf("%s;%d", p.DealType, p.ID),
 	}
 	advLead, err := h.adv.CreateLead(advReq)
 
@@ -90,12 +108,6 @@ func (h *handler) Post(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte(err.Error()))
 			return
 		}
-	}
-
-	pid := data.PID
-
-	if data.PID == 0 {
-		pid = defPID
 	}
 
 	l := lead.Lead{
