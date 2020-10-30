@@ -12,6 +12,7 @@ import (
 	"gitlab.com/cpanova/excentral/domain/lead"
 	"gitlab.com/cpanova/excentral/domain/partner"
 	"gitlab.com/cpanova/excentral/domain/postback"
+	"gitlab.com/cpanova/excentral/domain/sender"
 )
 
 var migrateCmd = &cobra.Command{
@@ -32,6 +33,7 @@ var migrateCmd = &cobra.Command{
 			&conversion.Conversion{},
 			&postback.Postback{},
 			&partner.Partner{},
+			&sender.Sender{},
 		)
 
 		log.Println("Done")

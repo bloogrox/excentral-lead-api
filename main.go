@@ -26,7 +26,9 @@ import (
 	"gitlab.com/cpanova/excentral/adapter/fakeadvertiser"
 	leadrepo "gitlab.com/cpanova/excentral/adapter/lead"
 	partnerrepo "gitlab.com/cpanova/excentral/adapter/partner"
+	partnerstatsrepo "gitlab.com/cpanova/excentral/adapter/partnerstats"
 	postbackrepo "gitlab.com/cpanova/excentral/adapter/postback"
+	senderrepo "gitlab.com/cpanova/excentral/adapter/sender"
 
 	advapi "gitlab.com/cpanova/excentral/ext/excentral"
 
@@ -37,6 +39,7 @@ import (
 
 	statsHandler "gitlab.com/cpanova/excentral/delivery/rest/admin/stats"
 	leadHandler "gitlab.com/cpanova/excentral/delivery/rest/lead"
+	partnerStatsHandler "gitlab.com/cpanova/excentral/delivery/rest/partner/stats"
 )
 
 var (
@@ -52,8 +55,10 @@ func main() {
 
 	leadRepo := leadrepo.New(db)
 	partnerRepo := partnerrepo.New(db)
+	senderRepo := senderrepo.New(db)
 	conversionRepo := conversionrepo.New(db)
 	postbackRepo := postbackrepo.New(db)
+	partnerstatsRepo := partnerstatsrepo.New(db)
 	adminstatsRepo := adminstatsrepo.New(db)
 	_ = fakeadvertiser.New()
 
@@ -158,6 +163,14 @@ func main() {
 		statsHandler.NewHandler(
 			adminstatsRepo,
 		).Stats)
+
+	r.Get(
+		"/senders/{senderID}/statistics",
+		partnerStatsHandler.NewHandler(
+			senderRepo,
+			partnerstatsRepo,
+		).Stats,
+	)
 
 	errs := make(chan error, 2)
 	go func() {
